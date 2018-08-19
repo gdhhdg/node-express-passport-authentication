@@ -11,13 +11,7 @@ const configAuth      = require('./auth');
 // expose this function to our app using module.exports
 module.exports = function(passport) {
 
-    // =========================================================================
-    // passport session setup ==================================================
-    // =========================================================================
-    // required for persistent login sessions
-    // passport needs ability to serialize and unserialize users out of session
-
-    // used to serialize the user for the session
+/////////////////PASSPORT SESSION\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\
     passport.serializeUser(function(user, done) {
         done(null, user.id);
     });
@@ -29,9 +23,7 @@ module.exports = function(passport) {
         });
     });
 
-    // =========================================================================
-    // Google LOGIN =============================================================
-    // =========================================================================
+/////////////////GOOGLE  SIGNUP\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\
     passport.use(new GoogleStrategy({
         clientID: configAuth.googleAuth.clientID,
         clientSecret: configAuth.googleAuth.clientSecret,
@@ -77,9 +69,7 @@ module.exports = function(passport) {
     }));
 
 
-    // =========================================================================
-    // Twitter LOGIN =============================================================
-    // =========================================================================
+///////////////// TWITTER SIGNUP\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\
     passport.use(new TwitterStrategy({
         consumerKey: configAuth.twitterAuth.consumerKey,
         consumerSecret:configAuth.twitterAuth.consumerSecret,
@@ -114,9 +104,7 @@ module.exports = function(passport) {
 
 
 
-    // =========================================================================
-    // FACEBOOK LOGIN =============================================================
-    // =========================================================================
+///////////////// FACEBOOK SIGNUP\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\
 
     passport.use(new FacebookStrategy({
 
@@ -169,12 +157,7 @@ module.exports = function(passport) {
             });
         }));
 
-    // =========================================================================
-    // LOCAL SIGNUP ============================================================
-    // =========================================================================
-    // we are using named strategies since we have one for login and one for signup
-    // by default, if there was no name, it would just be called 'local'
-
+///////////////// EMAIL SIGNUP\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\
     passport.use('local-signup', new LocalStrategy({
             // by default, local strategy uses username and password, we will override with email
             usernameField:'email',
@@ -240,17 +223,13 @@ module.exports = function(passport) {
         }));
 
 
-    // =========================================================================
-    // LOCAL LOGIN =============================================================
-    // =========================================================================
-    // we are using named strategies since we have one for login and one for signup
-    // by default, if there was no name, it would just be called 'local'
+///////////////// EMAIL LOGIN\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\
+
 
     passport.use('local-login', new LocalStrategy({
-            // by default, local strategy uses username and password, we will override with email
             usernameField : 'email',
             passwordField : 'password',
-            passReqToCallback : true // allows us to pass back the entire request to the callback
+            passReqToCallback : true 
         },
         function(req, email, password, done) { // callback with email and password from our form
             process.nextTick(function(){

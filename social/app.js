@@ -1,56 +1,49 @@
-// server.js
-
-// set up ======================================================================
-// get all the tools we need
-var express  = require('express');
-var app      = express();
-var port     = process.env.PORT || 3000;
-var mongoose = require('mongoose');
-var passport = require('passport');
-var flash    = require('connect-flash');
-var createError = require('http-errors');
+//imports
+const express  = require('express');
+const app      = express();
+const port     = process.env.PORT || 3000;
+const mongoose = require('mongoose');
+const passport = require('passport');
+const flash    = require('connect-flash');
+const createError = require('http-errors');
 
 const indexRouter = require('./routes/index');
-var usersRouter = require('./routes/users');
+const usersRouter = require('./routes/users');
 
-var morgan       = require('morgan');
-var cookieParser = require('cookie-parser');
-var bodyParser   = require('body-parser');
-var session      = require('express-session');
-var path = require('path');
+const morgan       = require('morgan');
+const cookieParser = require('cookie-parser');
+const bodyParser   = require('body-parser');
+const session      = require('express-session');
+const path = require('path');
 
 // configuration ===============================================================
-var configDB = require('./config/database.js');
+const configDB = require('./config/database.js');
 mongoose.connect(configDB.url); // connect to our database
 
 require('./config/passport')(passport); // pass passport for configuration
 
-// set up our express application
-app.use(morgan('dev')); // log every request to the console
-app.use(cookieParser()); // read cookies (needed for auth)
-app.use(bodyParser()); // get information from html forms
+// app use mw 
+app.use(morgan('dev')); // 
+app.use(cookieParser()); // cookies for auth
+app.use(bodyParser()); // 
 app.use(express.static(path.join(__dirname, 'public')));
 app.use(bodyParser.json());
 app.use(bodyParser.urlencoded({extended: true}));
 
 
-// view engine setup
+// view engine 
 app.set('views', path.join(__dirname, 'views'));
 app.set('view engine', 'ejs');
 
-// required for passport
-app.use(session({ secret: 'ilovescotchscotchyscotchscotch' })); // session secret
+//  passport
+app.use(session({ secret: 'thisisasessionsecretcodepleasechange' })); // Set your Session Secret
 app.use(passport.initialize());
 app.use(passport.session()); // persistent login sessions
-app.use(flash()); // use connect-flash for flash messages stored in session
+app.use(flash()); //  connect-flash - flash messages in session
 
 // routes ======================================================================
 app.use('/', indexRouter);
-app.use('/users', usersRouter);
-
-//require('./routes/index.js')(app, passport); // load our routes and pass in our app and fully configured passport
-
-
+app.use('/users', usersRouter);//meh...used a template to set up. didn't delete this route
 
 // catch 404 and forward to error handler
 app.use(function(req, res, next) {
